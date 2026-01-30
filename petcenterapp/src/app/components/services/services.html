@@ -1,0 +1,193 @@
+<div class="container mt-4"></div>
+  <h2 class="text-center mb-4">Services</h2>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <button class="navbar-toggler" type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarColor02">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item">
+        <a class="nav-link"
+           style="cursor:pointer"
+           (click)="onOpenModal(null, 'add')">
+          Add service
+        </a>
+      </li>
+    </ul>
+
+    <input type="search"
+           class="form-control w-25"
+           placeholder="Search services..."
+           (ngModelChange)="searchServices(key.value)"
+           #key="ngModel"
+           ngModel>
+  </div>
+</nav>
+
+<div class="container" id="main-container">
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Duration(in minutes)</th>
+            <th>Price (€)</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let service of services">
+            <td>{{ service.name }}</td>
+            <td>{{ service.description }}</td>
+            <td>{{ service.duration_minutes }}</td>
+            <td>{{ service.price }}</td>
+            <td>
+            <button class="btn btn-sm btn-primary me-2"
+                (click)="onOpenModal(service, 'edit')">Edit</button> 
+            <button class="btn btn-sm btn-danger"
+                (click)="onOpenModal(service, 'delete')">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!--Add Service Modal-->
+
+<div class="modal fade" id="addServiceModal" tabindex="-1" role="dialog" aria-labelledby="addServiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addServiceModalLabel">Add Service</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+       </div>
+       <div class="modal-body">
+          <form #addForm="ngForm" (ngSubmit)="onAddServices(addForm)">
+          <div class="form-group">
+             <label for="name">Name</label>
+             <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+             <label for="description">Description</label>
+             <input type="text" ngModel name="description" class="form-control" id="description" placeholder="Description" required>
+          </div>
+          <div class="form-group">
+            <label>Duration(minutes)</label>
+            <input type="number" ngModel name="duration_minutes" class="form-control" id="duration_minutes" placeholder="Duration (minutes)" required>
+          </div>
+          <div class="form-group">
+             <label for="price">Price (€)</label>
+             <input type="number" ngModel name="price" class="form-control" id="price" placeholder="(€)" required>
+          </div>
+          
+         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+          </form>
+       </div>
+    </div>
+  </div>
+  </div>
+
+
+<!-- Edit Service Modal -->
+<div class="modal fade" id="updateServiceModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Edit Service {{ editServices?.name }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form *ngIf="editServices">
+
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              [(ngModel)]="editServices.name">
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <input
+              type="text"
+              class="form-control"
+              name="description"
+              [(ngModel)]="editServices.description">
+          </div>
+          <div class="form-group">
+            <label>Duration (minutes)</label>
+            <input
+              type="number"
+              class="form-control"
+              name="duration_minutes"
+              [(ngModel)]="editServices.duration_minutes">
+          </div>
+
+          <div class="form-group">
+            <label>Price (€)</label>
+            <input
+              type="number"
+              class="form-control"
+              name="price"
+              [(ngModel)]="editServices.price">
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal">
+              Close
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="onUpdateServices();"
+              data-bs-dismiss="modal">
+              Save changes
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Delete Service Modal - Updated -->
+<div class="modal fade" id="deleteServiceModal" tabindex="-1" role="dialog" 
+     aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModelLabel">Delete Service</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete {{deleteServices?.name}}?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" 
+                data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger" 
+                (click)="onDeleteServices()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

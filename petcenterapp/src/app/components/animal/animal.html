@@ -1,0 +1,209 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Animals</h2>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <button class="navbar-toggler" type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarColor02">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item">
+        <a class="nav-link"
+           style="cursor:pointer"
+           (click)="onOpenModal(null, 'add')">
+          Add Animal
+        </a>
+      </li>
+    </ul>
+
+    <input type="search"
+           class="form-control w-25"
+           placeholder="Search animals..."
+           (ngModelChange)="searchAnimals(key.value)"
+           #key="ngModel"
+           ngModel>
+  </div>
+</nav>
+
+<div class="container" id="main-container">
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Name</th>
+        <th>Species</th>
+        <th>Breed</th>
+        <th>Age</th>
+        <th>Price (€)</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let animal of animals">
+        <td>{{ animal.name }}</td>
+        <td>{{ animal.specie }}</td>
+        <td>{{ animal.rasa }}</td>
+        <td>{{ animal.age }}</td>
+        <td>{{ animal.price }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary me-2"
+            (click)="onOpenModal(animal, 'edit')">Edit</button> 
+          <button class="btn btn-sm btn-danger"
+            (click)="onOpenModal(animal, 'delete')">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+
+<!-- Add Animal Modal -->
+<div class="modal fade" id="addAnimalModal" tabindex="-1" role="dialog" aria-labelledby="addAnimalModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addAnimalModalLabel">Add Animal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+       </div>
+       <div class="modal-body">
+          <form #addForm="ngForm" (ngSubmit)="onAddAnimal(addForm)">
+          <div class="form-group">
+             <label for="name">Name</label>
+             <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+             <label for="specie">Species</label>
+             <input type="text" ngModel name="specie" class="form-control" id="specie" placeholder="Species" required>
+          </div>
+          <div class="form-group">
+             <label for="rasa">Breed</label>
+             <input type="text" ngModel name="rasa" class="form-control" id="rasa" placeholder="Breed" required>
+          </div>
+          <div class="form-group">
+             <label for="age">Age</label>
+             <input type="number" ngModel name="age" class="form-control" id="age" placeholder="Age (in years)" required>
+          </div>
+          <div class="form-group">
+             <label for="price">Price (€)</label>
+             <input type="number" ngModel name="price" class="form-control" id="price" placeholder="(€)" required>
+          </div>
+          
+         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+          </form>
+       </div>
+    </div>
+  </div>
+  </div>
+
+
+ <!-- Edit Animal Modal -->
+<div class="modal fade" id="updateAnimalModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Edit Animal {{ editAnimal?.name }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form *ngIf="editAnimal">
+
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              [(ngModel)]="editAnimal.name">
+          </div>
+
+          <div class="form-group">
+            <label>Species</label>
+            <input
+              type="text"
+              class="form-control"
+              name="specie"
+              [(ngModel)]="editAnimal.specie">
+          </div>
+
+          <div class="form-group">
+            <label>Breed</label>
+            <input
+              type="text"
+              class="form-control"
+              name="rasa"
+              [(ngModel)]="editAnimal.rasa">
+          </div>
+
+          <div class="form-group">
+            <label>Age</label>
+            <input
+              type="number"
+              class="form-control"
+              name="age"
+              [(ngModel)]="editAnimal.age">
+          </div>
+
+          <div class="form-group">
+            <label>Price (€)</label>
+            <input
+              type="number"
+              class="form-control"
+              name="price"
+              [(ngModel)]="editAnimal.price">
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal">
+              Close
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="onUpdateAnimal()"
+              data-bs-dismiss="modal">
+              Save changes
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Delete Animal Modal - Updated -->
+<div class="modal fade" id="deleteAnimalModal" tabindex="-1" role="dialog" 
+     aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModelLabel">Delete Animal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete {{deleteAnimal?.name}}?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" 
+                data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger" 
+                (click)="onDeleteAnimal()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

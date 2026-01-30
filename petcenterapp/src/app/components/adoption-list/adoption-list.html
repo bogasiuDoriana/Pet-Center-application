@@ -1,0 +1,26 @@
+<div class="container mt-4">
+  <h2 class="mb-4">🐾 Animals Available for Adoption</h2>
+
+  <div *ngIf="animals.length === 0" class="alert alert-info">
+    No animals available at the moment.
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let a of animals">
+      <div class="card h-100 border-success">
+        <div class="card-body">
+          <h5 class="card-title">{{ a.name }}</h5>
+          <p class="card-text">
+            🐶 Species: {{ a.specie }}<br>
+            🎂 Age: {{ a.age || 'N/A' }}
+          </p>
+        </div>
+        <div class="card-footer text-center">
+          <button class="btn btn-success" (click)="apply(a.idAnimal)">
+            ❤️ Apply for Adoption
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
