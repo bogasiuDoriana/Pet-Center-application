@@ -1,6 +1,4 @@
 package com.example.PetCenter.controller;
-
-import com.example.PetCenter.domain.Animals;
 import com.example.PetCenter.domain.PetAdoption;
 import com.example.PetCenter.repo.AnimalsRepo;
 import com.example.PetCenter.service.PetAdoptionService;
@@ -16,13 +14,11 @@ import java.util.Map;
 public class PetAdoptionController {
 
     private final PetAdoptionService petAdoptionService;
-    private final AnimalsRepo animalRepository;
 
     @Autowired
 
     public PetAdoptionController(PetAdoptionService adoptionService, AnimalsRepo animalRepository) {
         this.petAdoptionService = adoptionService;
-        this.animalRepository = animalRepository;
     }
 
     @GetMapping("/pending")
