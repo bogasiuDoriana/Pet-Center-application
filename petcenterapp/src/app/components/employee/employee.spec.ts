@@ -1,16 +1,27 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
-import { Employee } from './employee';
+import { EmployeeComponent } from './employee.component';
+import { EmployeeService } from './employee.service';
 
-describe('Employee', () => {
-  let service: Employee;
+describe('EmployeeComponent', () => {
+  let component: EmployeeComponent;
+  let fixture: ComponentFixture<EmployeeComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Employee);
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [EmployeeComponent],
+      providers: [
+        { provide: EmployeeService, useValue: { getEmployees: () => of([]) } }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(EmployeeComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 });

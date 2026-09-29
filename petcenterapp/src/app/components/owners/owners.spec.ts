@@ -1,18 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
-import { Owners } from './owners.component';
+import { OwnersComponent } from './owners.component';
+import { OwnersService } from './owners.service';
+import { AdoptionService } from '../adoption/adoption.service';
 
-describe('Owners', () => {
-  let component: Owners;
-  let fixture: ComponentFixture<Owners>;
+describe('OwnersComponent', () => {
+  let component: OwnersComponent;
+  let fixture: ComponentFixture<OwnersComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Owners]
+      imports: [OwnersComponent],
+      providers: [
+        { provide: OwnersService, useValue: { getOwners: () => of([]) } },
+        { provide: AdoptionService, useValue: { getPending: () => of([]) } }
+      ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Owners);
+    fixture = TestBed.createComponent(OwnersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
